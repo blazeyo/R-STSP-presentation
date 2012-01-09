@@ -115,7 +115,7 @@ a:hover {
 
     font-family: 'Open Sans', 'PT Serif', georgia, serif;
 
-    font-size: 48px;
+    font-size: 32px;
     line-height: 1.5;
 }
 
@@ -526,5 +526,9 @@ ul li ul {
 .thank-you h1 {
   margin-top: 250px;
   text-align: center;
+}
+
+.step h2 {
+  font-weight: bold;
 }
 
