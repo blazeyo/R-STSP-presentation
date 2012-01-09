@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Genetic algorithm with a penalty function for R-STSP | impress.js</title>
+    
+    <meta name="description" content="impress.js is a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com.">
+    <meta name="author" content="Bartek Szopka" />
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+
+    <link href="css/style.css" rel="stylesheet" />
+</head>
+<body>
+
+<div id="impress" class="impress-not-supported">
+
+    <div class="fallback-message">
+        <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+        <p>For the best experience please use the latest <b>Chrome</b> or <b>Safari</b> browser. Firefox 10 and Internet Explorer 10 <i>should</i> also handle it.</p>
+    </div>
+    
+    <div class="step slide" data-x="-1000">
+      <h1>A Genetic Algorithm with a Penalty Function in the Selective Travelling Salesman Problem on a Road Network</h1>
+      <div class="footnote">Błażej Owczarczyk</div>
+    </div>
+    
+    <div class="step slide">
+      <h2>Plan</h2>
+      <ul>
+        <li>Background
+          <ul>
+            <li>STSP</li>
+            <li>R-STSP</li>
+            <li>Genetic algorithms with penalty function</li>
+          </ul>
+        </li>
+        <li>The algorithm
+          <ul>
+            <li>Pseudocode</li>
+            <li>Coding</li>
+            <li>Generating initial population</li>
+            <li>Fitness computing</li>
+            <li>Selection</li>
+            <li>Crossover</li>
+            <li>Mutation</li>
+          </ul>
+        </li>
+        <li>Experimental results</li>
+      </ul>
+    </div>
+    
+    <div class="step" data-x="-350" data-y="-350" data-z="-2000">
+      Selective Travelling Salesman Problem
+    </div>
+    
+    <div class="step outside" data-x="-350" data-y="-350" data-z="-2000" data-rotate-x="90">
+      <ul>
+        <li>Each city is given a profit</li>
+        <li>Salesman doesn't have to visit all cities</li>
+        <li>There is a tour length constraint</li>
+        <li>Goal is to maximize colleted profit not exceeding the length constraint</li>
+      </ul>
+    </div>
+    
+    <div class="step" data-x="850" data-y="-350" data-z="-2000" data-rotate-x="90">
+      Selective Travelling Salesman Problem defined on a road network
+    </div>
+    
+    <div class="step outside" data-x="850" data-y="-350" data-z="-2000">
+      <ul>
+        <li>Graph may not be complete</li>
+        <li>Cities can be visited multiple times, however profit is collected only once</li>
+      </ul>
+    </div>
+    
+    <div class="step" data-x="2050" data-y="-350" data-z="-2000">
+      Genetic algorithms with a penalty function
+    </div>
+    
+    <div class="step outside" data-x="2050" data-y="-350" data-z="-2000"  data-rotate-x="90">
+      <ul>
+        <li>Used to solve NP-hard problems with a constraint</li>
+        <li>Individuals exceeding constraint are punished (their fitness value is reduced)</li>
+        <li>Widens search space by allowing unfeasible individuals</li>
+      </ul>
+    </div>
+    
+    <div class="step" data-x="2050" data-y="-1550" data-z="-2000" data-rotate-y="90">
+      <h2>The algorithm - pseudocode</h2>
+      <img class="round" src="pseudocode.png" />
+    </div>
+    
+    <div class="step" data-x="2050" data-y="-350" data-z="-2000" data-rotate-y="90">
+      <h2>Coding</h2>
+      Chromosome is represented by a path. For example, the tour 1 - 2 - 3 - 5 - 6- 1 is represented by the sequence (1, 2, 3, 5, 6, 1).
+      <img class="round" src="graph.png" />
+    </div>
+    
+    <div class="step outside" data-x="2050" data-y="950" data-z="-2000" data-rotate-y="90">
+      <h2>Generating initial population</h2>
+      <ol>
+        <li>Start at the depot</li>
+        <li>Choose a city to which we can travel with equal probability</li>
+        <li>Add distance between depot and the chosen city to current tour length</li>
+        <li>If length is not greater than cmax/2 we continue starting at the chosen city</li>
+        <li>If it is, we reject last city and return to the depot the same way</li>
+      </ol>
+    </div>
+    
+    <div class="step" data-x="2050" data-y="2150" data-z="-2000" data-rotate-y="90">
+      <h2>Fitness computing</h2>
+      <img class="round" src="fitnessFunction.png" />
+      <ul>
+        <li>x - individual</li>
+        <li>eval(x) - individual's fitness value</li>
+        <li>x ∈ F - individial is acceptable</li>
+        <li>x ∉ F - individial exceeds constraint</li>
+        <li>f(x) - profit collected</li>
+        <li>p(x) - penalty</li>
+      </ul>
+    </div>
+    
+    <div class="step" data-x="2050" data-y="3250" data-z="-2000" data-rotate-y="90">
+      <h2>Penalty function</h2>
+      <img class="round" src="penaltyFunction.png" />
+      <ul>
+        <li>length(x) - individual's length</li>
+        <li>cmax - maximum acceptable length</li>
+      </ul>
+    </div>
+    
+    <div class="step" data-x="2050" data-y="3250" data-z="-2000" data-rotate-y="0">
+      <h2>Genetic operators</h2>
+    </div>
+    
+    <div class="step outside" data-x="2050" data-y="2250" data-z="-1000" data-rotate-y="0">
+      <h2>Selection</h2>
+      Tournament selection with tsize group size
+      <ul>
+        <li>Select tsize individuals</li>
+        <li>Compute their fitness values</li>
+        <li>Select individual with greatest fitness value</li>
+        <li>If individuals have equal fitness choose the one with shortest path length</li>
+        <li>Copy winner to next population</li>
+        <li>Return whole group to old population</li>
+      </ul>
+    </div>
+    
+    <div class="step outside" data-x="2050" data-y="1250" data-z="0" data-rotate-y="-90">
+      <h2>Crossover 1/2</h2>
+      <ol>
+        <li>Select random couple</li>
+        <li>Check if crossover can take place. If not return to 1.</li>
+        <li>Randomly choose one common gene from both parents common genes</li>
+        <li>Treat this gene as crossing point like in good old binary crossover operator</li>
+        <li>Swap fragments of tours from the crossing point to the end of the chromosome in two parent individuals</li>
+      </ol>
+    </div>
+    
+    <div class="step outside" data-x="1050" data-y="250" data-z="0" data-rotate-y="-90">
+      <h2>Crossover 2/2</h2>
+      Individuals that do not have a common gene (city) other than the depot cannot be crossed.
+      <img class="round" src="crossover.png" />
+    </div>
+    
+    <div class="step" data-x="50" data-y="-750" data-z="0" data-rotate-y="-90">
+      <h2>Mutation 1/3</h2>
+      Deletion mutation I
+      <ul>
+        <li>Tries to remove repeated cities from path</li>
+        <li>Visiting a city multiple times does not influence fitness value but increases  path length</li>
+      </ul>
+    </div>
+    
+    <div class="step" data-x="-950" data-y="-1750" data-z="0" data-rotate-y="-90">
+      <h2>Mutation 2/3</h2>
+      Deletion mutation II
+      <ul>
+        <li>Tries to remove random gene except for first and last which are established</li>
+      </ul>
+    </div>
+    
+    <div class="step" data-x="-1950" data-y="-2750" data-z="0" data-rotate-y="-90">
+      <h2>Mutation 3/3</h2>
+      Insertion mutation
+      <img class="round" src="insertionMutation.png" />
+    </div>
+    
+    <div class="step" data-x="-1950" data-y="-2750" data-z="0" data-rotate-y="-180">
+      <h2>Experimental results</h2>
+      <img class="round" src="map.png" />
+    </div>
+    
+    <div class="step" data-x="-2950" data-y="-2750" data-z="-1000" data-rotate-y="-180">
+      <h2>Cities</h2>
+      <ul>
+        <li>Twenty cities from each of eight provinces of eastern and central Poland</li>
+        <li>The network used in experiments was created from a real map</li>
+        <li>The more inhabitants, the higher profit associated with a given city</li>
+        <li>The capital of Poland, Warsaw, was chosen as depot</li>
+      </ul>
+    </div>
+    
+    <div class="step" data-x="-4500" data-y="-2750" data-z="-2000" data-rotate-y="-180">
+      <h2>Profit</h2>
+      <ul>
+        <li>Profits associated with cities were determined according to a number of inhabitants in a given city</li>
+      </ul>
+      <img class="round" src="profit.png" />
+    </div>
+    
+    <div class="step" data-x="-6000" data-y="-2750" data-z="-3000" data-rotate-y="-180">
+      <h2>Parameters</h2>
+      <ul>
+        <li>tsize = 3</li>
+        <li>psize = 300</li>
+        <li>ng = 100</li>
+        <li>cmax = {500, 600, ..., 1500}</li>
+      </ul>
+    </div>
+    
+    <div class="step" data-x="0" data-y="-2750" data-z="-3000" data-rotate-y="-180">
+      <h2>Results 1/3</h2>
+      <img class="round" src="resultsTable.png" />
+    </div>
+    
+    <div class="step" data-x="0" data-y="-1750" data-z="-3000" data-rotate-y="-180">
+      <h2>Results 2/3</h2>
+      cmax = 1500
+      <img class="round" src="resultsPlot.png" />
+    </div>
+    
+    <div class="step" data-x="0" data-y="-750" data-z="-3000" data-rotate-y="-180">
+      <h2>Results 3/3</h2>
+      cmax = 1000
+      <img class="round" src="unfeasibleIndividualsPlot.png" />
+    </div>
+    
+    <div class="step slide" data-x="-3000">
+      <h2>Conclusions</h2>
+      <ul>
+        <li>Allowing individuals that exceed constraints widens search space</li>
+        <li>Combining unfeasible individuals gives better results</li>
+        <li>Genetic algorithm with penalty function solves this particular problem better</li>
+      </ul>
+    </div>
+    
+    <div class="step slide thank-you" data-x="-2000">
+      <h1>Questions?</h1>
+    </div>
+    
+</div>
+
+<div class="hint">
+    <p>Use a spacebar or arrow keys to navigate</p>
+</div>
+
+<script src="js/impress.js"></script>
+
+</body>
+</html>
