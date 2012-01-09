@@ -1,0 +1,3 @@
+Browser-based presentation about solving Selective Travelling Problem Defined on a Road Network. It describes a Genetic Algorithm with a penalty function and presents it's results on a real road network connecting 160 cities in central and eastern Poland.
+
+Presentation is built using impress.js (https://github.com/bartaz/impress.js/)
